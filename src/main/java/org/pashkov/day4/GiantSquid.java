@@ -133,7 +133,7 @@ public class GiantSquid {
         int oneIncreaseCount = 0;
         boolean oneTrueOrFalse = false;
         String oneIncrementIndexToCheck = indexesListToCheck.get(0);
-        for (int i = 1; i < indexesListToCheck.size() - 1; i++) {
+        for (int i = 1; i < indexesListToCheck.size(); i++) {
             if (Integer.parseInt(indexesListToCheck.get(i)) - Integer.parseInt(oneIncrementIndexToCheck) == 1) {
                 oneIncreaseCount++;
             } else {
