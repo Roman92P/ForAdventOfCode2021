@@ -7,7 +7,6 @@ import java.util.*;
 public class Lanternfish {
 
     private static final int lifeCyckleDays = 6;
-    private  static final  int newOneLifeCycleDays = 8;
 
     public static void main(String[] args) {
         Map<String, String> stringStringMap = lunchLanternFishLifeForNDays(80);
@@ -45,7 +44,7 @@ public class Lanternfish {
                     }
                 }
             }
-            if(createNewFish==true){
+            if(createNewFish){
                 for (int i = 0; i < newCount; i++) {
                     fishLifeMap.put(String.valueOf(fishLifeMap.size()+1), "New8");
                 }
