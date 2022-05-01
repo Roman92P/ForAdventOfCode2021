@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="aoctasks" />
+        <module name="ForAdventOfCode2021" />
       </profile>
     </annotationProcessing>
   </component>
