@@ -4,24 +4,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLOutput;
 import java.util.*;
 
 
 public class SyntaxScoringPartOne {
-
-
     private static final List<String> OPENING_CHARACTERS = Arrays.asList("(", "[", "{", "<");
     private static final List<String> CLOSING_CHARACTERS = Arrays.asList(")", "]", "}", ">");
-
-
     public static void main(String[] args) {
         List<String> corruptedLines = findCorruptedLines();
         System.out.println(corruptedLines);
         int i = calculateScoreForSyntaxErrors(summarizeCorruptedCharsIntoMap(corruptedLines));
-
         System.out.println(i);
-
     }
 
     public static List<String> findCorruptedLines() {
@@ -33,14 +26,13 @@ public class SyntaxScoringPartOne {
         }
         return result;
     }
-
-    private static char findCorruptedCharacterInLine(String str){
+    private static char findCorruptedCharacterInLine(String str) {
         char[] chars = str.toCharArray();
         int checkingIndex = 0;
         while (true) {
             try {
                 System.out.println("Char arr looks like: " + Arrays.toString(chars));
-                System.out.println("Checking index: "+ checkingIndex);
+                System.out.println("Checking index: " + checkingIndex);
                 char c = chars[checkingIndex];
                 int cInt = (int) c;
                 System.out.println("First Character will be: " + c + ", with int val: " + cInt + ", index: " + checkingIndex);
@@ -57,7 +49,7 @@ public class SyntaxScoringPartOne {
                     chars[checkingIndex] = ' ';
                     chars = removeSpacesFromChArray(chars);
                     checkingIndex = newIndex - 2;
-                    if(checkingIndex<0)checkingIndex=0;
+                    if (checkingIndex < 0) checkingIndex = 0;
                 } else {
                     checkingIndex = newIndex;
                 }
@@ -65,30 +57,27 @@ public class SyntaxScoringPartOne {
                 break;
             }
         }
-
         for (char x : chars) {
             System.out.print(x + " ");
         }
         System.out.print("\n");
         char wrongChar = findCorruptedCharacterInCharArray(chars);
-        System.out.println("Wrong one: "+wrongChar);
+        System.out.println("Wrong one: " + wrongChar);
 
         return wrongChar;
     }
-
     private static char findCorruptedCharacterInCharArray(char[] chars) {
         int index = 0;
-        for (int i = 1; i <chars.length-1; i++) {
+        for (int i = 1; i < chars.length - 1; i++) {
             char testChar = chars[index];
             char c = chars[i];
-            if(CLOSING_CHARACTERS.contains(Character.toString(c)) && c-testChar!=1 || CLOSING_CHARACTERS.contains(Character.toString(c)) && c-testChar!=2){
+            if (CLOSING_CHARACTERS.contains(Character.toString(c)) && c - testChar != 1 || CLOSING_CHARACTERS.contains(Character.toString(c)) && c - testChar != 2) {
                 return c;
             }
-            index= index+1;
+            index = index + 1;
         }
         return '@';
     }
-
     private static char[] removeSpacesFromChArray(char[] chars) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(chars);
@@ -97,7 +86,6 @@ public class SyntaxScoringPartOne {
         char[] chars1 = s1.toCharArray();
         return chars1;
     }
-
     private static String findNotSpacialChar(char[] chars, int i) {
         for (int j = i + 1; j < chars.length; j++) {
             String s = Character.toString(chars[j]);
@@ -105,7 +93,6 @@ public class SyntaxScoringPartOne {
         }
         return null;
     }
-
     public static List<String> readInputFromFile() {
         Path path = Paths.get("input10_1.txt");
         try {
@@ -115,7 +102,6 @@ public class SyntaxScoringPartOne {
         }
         return null;
     }
-
     public static int calculateScoreForSyntaxErrors(Map<String, Integer> syntaxErrorAppearsMap) {
         Map<String, Integer> syntaxErrorScoreMap = new HashMap<>();
         syntaxErrorScoreMap.put(")", 3);
@@ -129,24 +115,22 @@ public class SyntaxScoringPartOne {
         }
         return result;
     }
-
-    public static Map<String, Integer> summarizeCorruptedCharsIntoMap(List<String>allCorruptedChars){
+    public static Map<String, Integer> summarizeCorruptedCharsIntoMap(List<String> allCorruptedChars) {
         Map<String, Integer> resultMap = new HashMap<>();
         int roundBrackets = 0;
         int squareBrackets = 0;
         int curlyBrackets = 0;
         int angleBrackets = 0;
-        for (String s : allCorruptedChars){
-            if(s.equals(")")) roundBrackets++;
-            if(s.equals("]")) squareBrackets++;
-            if(s.equals("}")) curlyBrackets++;
-            if(s.equals(">")) angleBrackets++;
+        for (String s : allCorruptedChars) {
+            if (s.equals(")")) roundBrackets++;
+            if (s.equals("]")) squareBrackets++;
+            if (s.equals("}")) curlyBrackets++;
+            if (s.equals(">")) angleBrackets++;
         }
-        resultMap.put(")",roundBrackets);
-        resultMap.put("]",squareBrackets);
-        resultMap.put("}",curlyBrackets);
-        resultMap.put(">",angleBrackets);
-
+        resultMap.put(")", roundBrackets);
+        resultMap.put("]", squareBrackets);
+        resultMap.put("}", curlyBrackets);
+        resultMap.put(">", angleBrackets);
         return resultMap;
     }
 }
