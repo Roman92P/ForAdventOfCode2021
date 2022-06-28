@@ -1,6 +1,5 @@
 package org.pashkov.day11;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.pashkov.AoCUtills.AoCInputReader;
 
 import java.util.*;
@@ -23,13 +22,125 @@ public class DumboOctopusPartOne {
             mainStrArr = increaseEachCharacterByOne2(mainStrArr);
             System.out.println("After increase by one: ");
             printListWithLines(mainStrArr);
-            while (arrayContainFlashes(mainStrArr)) {
-                mainStrArr = adoptArrayToExistingFlashes(mainStrArr);
-            }
+            mainStrArr = followFlashes(mainStrArr);
             System.out.println("After adopting: ");
             printListWithLines(mainStrArr);
             count++;
         }
+    }
+
+
+    private static String[][] followFlashes(String[][] str2DArray){
+        for (int i = 0; i < str2DArray.length; i++) {
+            for (int j = 0; j < str2DArray[i].length; j++) {
+                String s = str2DArray[i][j];
+                if(s.equals("0")){
+                    str2DArray[i][j] = "*";
+                }
+            }
+        }
+        int temp1FlashesNumber = countFlashes(str2DArray);
+        for (int i = 0; i < str2DArray.length; i++) {
+            for (int j = 0; j < str2DArray[i].length; j++) {
+                String s = str2DArray[i][j];
+                if(s.equals("*")){
+                    str2DArray = increaseAllAroundByOne(str2DArray, i, j);
+//                    List<String> newFlashesAround = findNewFlashesIfOccur(str2DArray, i, j);
+//                    for (String newFlashCoordinates : newFlashesAround){
+//                        String[] coordinates = newFlashCoordinates.split(" : ");
+//                        int x = Integer.parseInt(coordinates[0]);
+//                        int y = Integer.parseInt(coordinates[1]);
+//                        str2DArray = followFlashes(str2DArray, x, y);
+//                    }
+                }
+            }
+        }
+        if(temp1FlashesNumber != countFlashes(str2DArray))
+            followFlashes(str2DArray);
+        return str2DArray;
+    }
+
+    private static int countFlashes(String[][] str2DArray) {
+        int result = 0;
+        for (int i = 0; i < str2DArray.length; i++) {
+            for (int j = 0; j < str2DArray[i].length; j++) {
+                if(str2DArray[i][j].equals("0")) result = result + 1;
+            }
+        }
+        return result;
+    }
+
+    private static List<String> findNewFlashesIfOccur(String[][] ints, int i, int j) {
+        List<String> result = new ArrayList<>();
+        if (indexExist(ints, i - 1, j - 1) && ints[i - 1][j - 1].equals("0")) {
+            int i1 = i - 1;
+            int j1 = j - 1;
+            result.add(i1+" : "+j1);
+        }
+        if (indexExist(ints, i - 1, j) && ints[i - 1][j].equals("0")) {
+            int i1 = i - 1;
+            int j1 = j;
+            result.add(i1+" : "+j1);
+        }
+        if (indexExist(ints, i - 1, j + 1) && ints[i - 1][j + 1].equals("0")) {
+            int i1 = i - 1;
+            int j1 = j + 1;
+            result.add(i1+" : "+j1);
+        }
+        if (indexExist(ints, i, j - 1) && ints[i][j - 1].equals("0")) {
+            int i1 = i;
+            int j1 = j - 1;
+            result.add(i1+" : "+j1);
+        }
+        if (indexExist(ints, i, j + 1) && ints[i][j + 1].equals("0")) {
+            int i1 = i;
+            int j1 = j + 1;
+            result.add(i1+" : "+j1);
+        }
+        if (indexExist(ints, i + 1, j - 1) && ints[i + 1][j - 1].equals("0")) {
+            int i1 = i + 1;
+            int j1 = j - 1;
+            result.add(i1+" : "+j1);
+        }
+        if (indexExist(ints, i + 1, j) && ints[i + 1][j].equals("0")) {
+            int i1 = i + 1;
+            int j1 = j;
+            result.add(i1+" : "+j1);
+        }
+        if (indexExist(ints, i + 1, j + 1) && ints[i + 1][j + 1].equals("0")) {
+            int i1 = i + 1;
+            int j1 = j + 1;
+            result.add(i1+" : "+j1);
+        }
+        return result;
+    }
+
+    private static String[][] increaseAllAroundByOne(String[][] ints, int i, int j) {
+        if (indexExist(ints, i - 1, j - 1) && !ints[i - 1][j - 1].equals("*")) {
+            ints[i-1][j-1] = String.valueOf(increaseByOne(Integer.parseInt(ints[i-1][j-1])));
+        }
+        if (indexExist(ints, i - 1, j) && !ints[i - 1][j].equals("*")) {
+            ints[i-1][j] = String.valueOf(increaseByOne(Integer.parseInt(ints[i-1][j]+1)));
+        }
+        if (indexExist(ints, i - 1, j + 1) && !ints[i - 1][j + 1].equals("*")) {
+            ints[i-1][j+1] = String.valueOf(increaseByOne(Integer.parseInt(ints[i-1][j+1]+1)));
+        }
+        if (indexExist(ints, i, j - 1) && !ints[i][j - 1].equals("*")) {
+            ints[i][j-1] = String.valueOf(increaseByOne(Integer.parseInt(ints[i][j-1]+1)));
+        }
+        if (indexExist(ints, i, j + 1) && !ints[i][j + 1].equals("*")) {
+            ints[i][j+1] = String.valueOf(increaseByOne(Integer.parseInt(ints[i][j+1]+1)));
+        }
+        if (indexExist(ints, i + 1, j - 1) && !ints[i + 1][j - 1].equals("*")) {
+            ints[i+1][j-1] = String.valueOf(increaseByOne(Integer.parseInt(ints[i+1][j-1]+1)));
+        }
+        if (indexExist(ints, i + 1, j) && !ints[i + 1][j].equals("*")) {
+            ints[i+1][j] = String.valueOf(increaseByOne(Integer.parseInt(ints[i+1][j]+1)));
+        }
+        if (indexExist(ints, i + 1, j + 1) && !ints[i + 1][j + 1].equals("*")) {
+            ints[i+1][j+1] = String.valueOf(increaseByOne(Integer.parseInt(ints[i+1][j+1]+1)));
+        }
+        return ints;
     }
 
     private static String[][] increaseEachCharacterByOne2(String[][] strings) {
@@ -203,7 +314,6 @@ public class DumboOctopusPartOne {
                 .collect(Collectors.toList());
     }
 
-//    private static void get
 
     private static void printListWithLines(String[][] str) {
         for (int i = 0; i < str.length; i++) {
