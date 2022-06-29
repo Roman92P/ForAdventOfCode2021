@@ -12,22 +12,24 @@ public class DOPartOne {
     public static void main(String[] args) {
         System.out.println(increaseByOne(Integer.parseInt("8")+1));
 
-        List<String> strings = AoCInputReader.readInputFromFile("input11_1.txt");
+        List<String> strings = AoCInputReader.readInputFromFile("input11.txt");
         int[][] mainarr = convertStringListTo2DArray(strings);
         String[][] mainStrArr = convertIntArrayToString(mainarr);
         int count = 0;
         int flashes = 0;
-        while (count < 1) {
-            System.out.println("Before increase by one: ");
-            printListWithLines(mainStrArr);
+        while (count < 100) {
+            //System.out.println("Before increase by one: ");
+           // printListWithLines(mainStrArr);
             mainStrArr = increaseEachCharacterByOne(mainStrArr);
-            System.out.println("After increase by one: ");
-            printListWithLines(mainStrArr);
+           // System.out.println("After increase by one: ");
+            //printListWithLines(mainStrArr);
             mainStrArr = followFlashes(mainStrArr);
-            System.out.println("After adopting: ");
-            printListWithLines(mainStrArr);
+            //System.out.println("After adopting: ");
+            //printListWithLines(mainStrArr);
+            flashes = flashes + countFlashes(mainStrArr);
             count++;
         }
+        System.out.println("Flashes number: "+ flashes);
     }
 
     private static String[][] followFlashes(String[][] str2DArray) {
@@ -57,8 +59,17 @@ public class DOPartOne {
             }
         }
         if (temp1FlashesNumber < countFlashes(str2DArray)) {
-            System.out.println("Here");
             followFlashes(str2DArray);
+        }
+        if(temp1FlashesNumber == countFlashes(str2DArray)){
+            for (int i = 0; i < str2DArray.length; i++) {
+                for (int j = 0; j < str2DArray[i].length; j++) {
+                    String s = str2DArray[i][j];
+                    if (s.equals("@")) {
+                        str2DArray[i][j] = "0";
+                    }
+                }
+            }
         }
         return str2DArray;
     }
